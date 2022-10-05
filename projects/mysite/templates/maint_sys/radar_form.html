@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h5 class="my-3 border-bottom pd-2">정비기록 등록</h5>
+    <form method="post" class="post-form my-3">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <b>* 시간입력방법 : 연-월-일 시:분</b><br>
+        <button type="submit" class="btn btn-primary">저장하기</button>
+    </form>
+</div>
+{% endblock %}

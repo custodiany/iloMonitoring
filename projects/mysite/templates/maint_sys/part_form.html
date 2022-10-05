@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h5 class="my-3 border-bottom pd-2">예비품 등록</h5>
+    <form method="post" class="post-form my-3">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <!-- 오류표시 start -->
+        <!-- {% if form.errors %}
+            <div class="alert alert-danger" role="alert">
+                {% for field in form %}
+                    {% if field.errors %}
+                    <strong>{{ field.label }}</strong>
+                    {{field.errors}}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% endif %} -->
+         <!-- 오류표시 end- -->
+         <!-- <div class="form-group">
+            <label for="parts_usage">용도</label>
+            <input type="text" class="form-control" name="parts_usage" id="parts_usage" value="{{ form.parts_usage.value|default_if_none:'' }}">
+        </div>
+        <div class="form-group">
+            <label for="parts_num">자재번호</label>
+            <input type="text" class="form-control" name="parts_num" id="parts_num" value="{{ form.parts_num.value|default_if_none:'' }}">
+        </div>
+        <div class="form-group">
+            <label for="parts_name">자재명</label>
+            <input type="text" class="form-control" name="parts_name" id="parts_name" value="{{ form.parts_name.value|default_if_none:'' }}">
+        </div>
+        <div class="form-group">
+            <label for="obligatory">재고수준</label>
+            <input type="text" class="form-control" name="obligatory" id="obligatory" value="{{ form.obligatory.value|default_if_none:'' }}">
+        </div>
+        <div class="form-group">
+            <label for="inventory">현 재고량 총합</label>
+            <input type="text" class="form-control" name="inventory" id="inventory" value="{{ form.inventory.value|default_if_none:'' }}">
+        </div> -->
+        <button type="submit" class="btn btn-primary">저장하기</button>
+    </form>
+</div>
+{% endblock %}

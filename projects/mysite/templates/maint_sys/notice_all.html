@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container-fluid text-center">
+<br>
+<br>
+<h1>{{ radar_date|date:'Y년m월d일'}} 공지사항</h1>
+<br>
+<br>
+
+<h2>레이더 정비</h2>
+{% if radar_maint %}
+{% for radar in radar_maint %}
+<p>
+<h3>{{ radar.site_id.site_name }} : {{ radar.pm_start|date:'d일 G시i분'}} ~ {{radar.pm_end|date:'d일 G시i분'}}</h3>
+</p>
+{% endfor %}
+{% else %}
+정비 없음
+{% endif %}
+<br>
+<br>
+<br>
+<br>
+
+<h2>AIDC</h2>
+{% if aidc_maint %}
+{% for aidc in aidc_maint %}
+<p>
+<h3>{{ aidc.site_id.site_name }} : {{ aidc.pm_start|date:'d일 G시i분'}} ~ {{aidc.pm_end|date:'d일 G시i분'}}</h3>
+</p>
+{% endfor %}
+{% else %}
+<b>정비 없음</b>
+{% endif %}
+<br>
+<br>
+<br>
+
+
+
+
+
+
+<h2>우리 부 자체 정비</h2>
+{% if task_maint %}
+{% for task in task_maint %}
+<p>
+<h3>{{ task.task_name }} : {{ task.pm_start|date:'d일 G시i분'}} ~ {{task.pm_stop|date:'d일 G시i분'}}</h3>
+</p>
+{% endfor %}
+{% else %}
+<b>정비 없음</b>
+{% endif %}
+
+</div>
+
+{% endblock %}

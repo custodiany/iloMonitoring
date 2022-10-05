@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block content %}
+<style type="text/css">
+    .tg  {border-collapse:collapse;border-spacing:0;}
+    .tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+      overflow:hidden;padding:3px 20px;word-break:normal;}
+    .tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+      font-weight:normal;overflow:hidden;padding:3px 20px;word-break:normal;}
+    .tg .tg-0lax{text-align:left;vertical-align:top}
+    </style>
+    {% if user.is_authenticated %}
+    <a href="{% url 'maint_sys:maint_create' %}" class="btn btn-primary">장비수리내역 등록</a>
+    {% endif %}
+<div class="container-fluid row justify-content-center align-items-center">
+    <table class="tg">
+    <thead>
+      <tr>
+        <th class="tg-0lax">연번</th>
+        <th class="tg-0lax">관리번호</th>
+        <th class="tg-0lax">대상장비</th>
+        <th class="tg-0lax">수리일자</th>
+        <th class="tg-0lax">수리내역</th>
+        <th class="tg-0lax">관리소</th>
+        <th class="tg-0lax">관련문서(각종보고서 및 전자보고)</th>
+        <th class="tg-0lax">사용예비품</th>
+        <th class="tg-0lax">사용수량</th>
+        <th class="tg-0lax">비고</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for maint in maints %}
+      <tr>
+        <td class="tg-0lax">{{ forloop.counter }}</td>
+        <td class="tg-0lax">{{ maint.dev_id.maint_num }}</td>
+        <td class="tg-0lax">{{ maint.dev_id.maint_name }}</td>
+        <td class="tg-0lax">{{ maint.rep_date|date:"Y-m-d" }}</td>
+        <td class="tg-0lax">{{ maint.rep_content }}</td>
+        <td class="tg-0lax">{{ maint.dev_id.manage }}</td>
+        <td class="tg-0lax">{{ maint.related_doc }}</td>
+        <td class="tg-0lax">{{ maint.part_id.parts_name }}</td>
+        <td class="tg-0lax">{{ maint.used_num }}</td>
+        <td class="tg-0lax">{{ maint.etc }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+    </table>
+  </div>
+
+
+
+{% endblock %}

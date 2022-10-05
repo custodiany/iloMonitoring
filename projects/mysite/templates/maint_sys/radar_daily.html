@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    table {
+      width: 100%;
+      height: 100%;
+      border: 2px solid #444444;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid #444444;
+      text-align: center;
+      /* vertical-align: top; */
+    }
+  </style>
+
+<form action="" class="form">
+    <input type="date" name="date" value="{{ kw|default_if_none:'' }}">
+    <input class="btn btn-primary" type="submit" value="조회">
+</form>
+
+    <table class="tg">
+    <thead>
+      <tr>
+        <th colspan="6">
+           <h1>{{ radar_date|date:'Y년 m월 d일' }} 센서 미입력 기록부</h1>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="tg-0lax"><b>레이더명</b></td>
+        <td class="tg-0lax"><b>미입력 시작일시(L)</b></td>
+        <td class="tg-0lax"><b>미입력 종료일시(L)</b></td>
+        <td class="tg-0lax"><b>소요 시간</b></td>
+        <td class="tg-0lax"><b>작업 내용</b></td>
+        <td class="tg-0lax"><b>조치 내용</b></td>
+      </tr>
+      <!--for 문으로 날짜 filter된 자료 돌려 넣기 시작-->
+      {% if radar_maint %}
+        {% for radar in radar_maint %}
+      <tr>
+        <td class="tg-0lax">{{ radar.site_id.site_name }}</td>
+        <td class="tg-0lax">{{ radar.pm_start|date:'Y년m월d일 G시i분' }}</td>
+        <td class="tg-0lax">{{ radar.pm_end|date:'Y년m월d일 G시i분' }}</td>
+        <td class="tg-0lax">{{ radar.pm_start|timesince:radar.pm_end}}</td>
+        <td class="tg-0lax">{{ radar.pm_what }}</td>
+        <td class="tg-0lax">Radar disabled</td>
+      </tr>
+        {% endfor %}
+      {% endif %}
+    <!-- 끝-->
+      <tr>
+        <td colspan="6"><h3>AIDC 기록부</h3></td>
+      </tr>
+    <!--for 문으로 날짜 filter된 자료 돌려 넣기 시작-->
+      <tr>
+        <td class="tg-0lax">AIDC 사이트명</td>
+        <td class="tg-0lax">정비 시작일시(U)</td>
+        <td class="tg-0lax">정비 종료일시(U)</td>
+        <td class="tg-0lax">소요시간</td>
+        <td class="tg-0lax" colspan="2">작업내용</td>
+      </tr>
+    <!-- 끝-->
+    {% if aidc_maint %}
+    {% for aidc in aidc_maint %}
+  <tr>
+    <td class="tg-0lax">{{ aidc.site_id.site_name }}</td>
+    <td class="tg-0lax">{{ aidc.pm_start|date:'Y년m월d일 G시i분' }}</td>
+    <td class="tg-0lax">{{ aidc.pm_end|date:'Y년m월d일 G시i분' }}</td>
+    <td class="tg-0lax">{{ aidc.pm_start|timesince:aidc.pm_end }}</td>
+    <td class="tg-0lax" colspan="2">{{ aidc.pm_what }}</td>
+  </tr>
+    {% endfor %}
+  {% endif %}
+      <tr>
+        <td colspan="6"><h3>전자부 작업 현황</h3></td>
+      </tr>
+      <tr>
+        <td class="tg-0lax">작업명</td>
+        <td class="tg-0lax">작업시작시간</td>
+        <td class="tg-0lax">작업종료시간</td>
+        <td class="tg-0lax">소요시간</td>
+        <td class="tg-0lax" colspan="2">작업내용</td>
+      </tr>
+      {% if task_maint %}
+      {% for task in task_maint %}
+    <tr>
+      <td class="tg-0lax">{{ task.task_name }}</td>
+      <td class="tg-0lax">{{ task.pm_start|date:'Y년m월d일 G시i분' }}</td>
+      <td class="tg-0lax">{{ task.pm_stop|date:'Y년m월d일 G시i분' }}</td>
+      <td class="tg-0lax">{{ task.pm_start|timesince:task.pm_stop }}</td>
+      <td class="tg-0lax">{{ task.etc }}</td>
+      <td class="tg-0lax"></td>
+    </tr>
+      {% endfor %}
+    {% endif %}
+    </tbody>
+    </table>
+
+    {% if user.is_authenticated %}
+    <a href="{% url 'maint_sys:radar_create' %}" class="btn btn-primary">레이더 정비 등록</a>
+    <a href="{% url 'maint_sys:aidc_create' %}" class="btn btn-primary">AIDC 정비 등록</a>
+    <a href="{% url 'maint_sys:task_create' %}" class="btn btn-primary">우리부 작업 등록</a>
+    {% endif %}
+
+
+{% endblock %}

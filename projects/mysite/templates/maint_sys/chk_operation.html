@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<!--{'chk_opr' : chk_opr, 'now_day' : now_day, 'now_month' : now_month, 'now_week' : now_week, 'now_date' : now_date} -->
+
+<style type="text/css">
+    .tg  {border-collapse:collapse;border-spacing:10;}
+    .tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+      overflow:hidden;padding:10px 5px;word-break:normal;}
+    .tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+      font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+    .tg .tg-0lax{text-align:center;vertical-align:center}
+    </style>
+<form action="" class="form">
+  <input type="date" name="date" value="{{ kw|default_if_none:'' }}">
+  <input class="btn btn-primary" type="submit" value="조회">
+</form>
+
+<div class="container-fluid">
+  <table class="table" style="text-align: center;">
+  <thead>
+    <tr>
+      <th class="thead-dark text-center" colspan="5">
+          <h1><b>{{ now_date | date:'Y년 m월 d일' }} 운영관리소 예방점검일지 </b></h1>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="thead-dark text-center"><b>장비명</b></td>
+      <td class="thead-dark text-center"><b>루틴번호</b></td>
+      <td class="thead-dark text-center"><b>점검주기</b></td>
+      <td class="thead-dark text-center"><b>점검내용</b></td>
+      <td class="thead-dark text-center"><b>점검시간</b></td>
+    </tr>
+      {% if chk_opr_week %}
+        {% for opr_week in chk_opr_week %}
+      <tr>
+        <td class="tg-0lax">{{ opr_week.device_name }}</td>
+        <td class="tg-0lax">{{ opr_week.routine_num }}</td>
+        <td class="tg-0lax">{{ opr_week.chk_cycle }}</td>
+        <td class="tg-0lax">{{ opr_week.chk_content }}</td>
+        <td class="tg-0lax"></td>
+      </tr>
+        {% endfor %}
+      {% endif %}
+      {% if chk_opr_month %}
+      {% for opr_month in chk_opr_month %}
+      <tr>
+        <td class="tg-0lax">{{ opr_month.device_name }}</td>
+        <td class="tg-0lax">{{ opr_month.routine_num }}</td>
+        <td class="tg-0lax">{{ opr_month.chk_cycle }}</td>
+        <td class="tg-0lax">{{ opr_month.chk_content }}</td>
+        <td class="tg-0lax"></td>
+      </tr>
+        {% endfor %}
+      {% endif %}
+      {% if chk_opr_quater %}
+      {% for opr_quater in chk_opr_quater %}
+      <tr>
+        <td class="tg-0lax">{{ opr_quater.device_name }}</td>
+        <td class="tg-0lax">{{ opr_quater.routine_num }}</td>
+        <td class="tg-0lax">{{ opr_quater.chk_cycle }}</td>
+        <td class="tg-0lax">{{ opr_quater.chk_content }}</td>
+        <td class="tg-0lax"></td>
+      </tr>
+        {% endfor %}
+      {% endif %}
+      {% if chk_opr_half %}
+      {% for opr_half in chk_opr_half %}
+      <tr>
+        <td class="tg-0lax">{{ opr_half.device_name }}</td>
+        <td class="tg-0lax">{{ opr_half.routine_num }}</td>
+        <td class="tg-0lax">{{ opr_half.chk_cycle }}</td>
+        <td class="tg-0lax">{{ opr_half.chk_content }}</td>
+        <td class="tg-0lax"></td>
+      </tr>
+        {% endfor %}
+      {% endif %}
+      {% if chk_opr_year %}
+      {% for opr_year in chk_opr_year %}
+      <tr>
+        <td class="tg-0lax">{{ opr_year.device_name }}</td>
+        <td class="tg-0lax">{{ opr_year.routine_num }}</td>
+        <td class="tg-0lax">{{ opr_year.chk_cycle }}</td>
+        <td class="tg-0lax">{{ opr_year.chk_content }}</td>
+        <td class="tg-0lax"></td>
+      </tr>
+        {% endfor %}
+      {% endif %}
+    </tbody>
+    </table>
+</div>
+
+{% endblock %}
