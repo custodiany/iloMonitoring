@@ -42,7 +42,6 @@ def cmh(request):
     context = {'sdps' : sdps, 'fdps' : fdps, 'drfs' : drfs, 'sdrs' : sdrs, 'efss' : efss, 'rcoms' : rcoms, 'byps' : byps,\
                'tsvs' : tsvs, 'apps' : apps, 'nmss' : nmss, 'pmss' : pmss, 'wass' : wass, 'etcs' : etcs}
     return render(request, 'fanMonitoring/cmh.html', context)
-    pass
 
 def network(request):
     pass
