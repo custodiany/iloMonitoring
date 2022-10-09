@@ -29,11 +29,11 @@ class Servers:
             ################# Ubuntu에서 돌릴때는 -c옵션으로 변경하기!
             r = ping(self.ilo_ip)
             q = ping(self.server_ip)
-            if r==None:
+            if r == False:
                 result[1] = False
             else :
                 result[1] = True
-            if q==None :
+            if q == False:
                 result[0] = False
             else :
                 result[0] = True
@@ -116,7 +116,7 @@ class Servers:
             #server_db_id
             result[12] = self.server_db_id
             #time
-            result[13] = datetime.now()
+            result[13] = datetime.now().isoformat()
             return result
         except : pass
 
@@ -158,7 +158,7 @@ class Servers:
             else:
                 self.disk_validity = False
             result[5] = self.disk_validity
-            result[6] = datetime.now()
+            result[6] = time.time()
             result[7] = self.server_db_id
             return result
         except : pass
@@ -184,95 +184,92 @@ class Servers:
             #get txPps
             result[1] = '%0.3f' %((float(speed["after_tx"]) - float(speed["before_tx"]))/5)
             #get time and server_db_id
-            result[2] = datetime.now()
+            result[2] = 0
             result[3] = self.server_db_id
             return result
         except : pass
 
-    def save_cmh_to_db(self, cmhInfoList):
-        self.table_name = "fanMonitoring_cmh"
-        self.input_name1, self.input_name2, self.input_name3, self.input_name4, self.input_name5, self.input_name6, self.input_name7, self.input_name8 \
-            = ["cpu", "cpuStatus", "mem", "memStatus", "hdd", "hddStatus", "time", "serverId_id"]
-        self.input_data1, self.input_data2, self.input_data3, self.input_data4, self.input_data5, self.input_data6, self.input_data7, self.input_data8,\
-            = cmhInfoList
 
-        try :
+
+    def save_cmh_to_db(self, cmhInfoList):
+        try:
+            self.table_name = "fanMonitoring_cmh"
+            self.input_name1, self.input_name2, self.input_name3, self.input_name4, self.input_name5, self.input_name6, self.input_name7, self.input_name8 \
+                = ["cpu", "cpuStatus", "mem", "memStatus", "hdd", "hddStatus", "time", "serverId_id"]
+            self.input_data1, self.input_data2, self.input_data3, self.input_data4, self.input_data5, self.input_data6, self.input_data7, self.input_data8,\
+                = cmhInfoList
+
+
             conn = psycopg2.connect(host='localhost', dbname='postgres', user='postgres', password='cua001', port=5432)
             c = conn.cursor()
-            c.execute(f"INSERT OR IGNORE INTO {self.table_name} ({self.input_name1}, {self.input_name2}, {self.input_name3}, {self.input_name4}, {self.input_name5},\
-                                              {self.input_name6}, {self.input_name7}, {self.input_name8}) VALUES (?,?,?,?,?,?,?,?)", \
-                (self.input_data1,self.input_data2, self.input_data3, self.input_data4, self.input_data5, self.input_data6, self.input_data7, self.input_data8))
+            c.execute(f'INSERT INTO "{self.table_name}" ("{self.input_name1}", "{self.input_name2}", "{self.input_name3}", "{self.input_name4}", "{self.input_name5}",\
+                                              "{self.input_name6}", "{self.input_name7}", "{self.input_name8}") VALUES ({self.input_data1},{self.input_data2}, {self.input_data3}, {self.input_data4}, {self.input_data5}, {self.input_data6}, current_timestamp, {self.input_data8})')
             conn.commit()
             conn.close()
-        except :
-            pass
+        except:pass
+
 
 
     def save_network_to_db(self, networkInfoList):
-        self.table_name = "fanMonitoring_network"
-        self.input_name1, self.input_name2, self.input_name3, self.input_name4 = ["rxPps", "txPps", "time", "serverId_id"]
-        self.input_data1, self.input_data2, self.input_data3, self.input_data4 = networkInfoList
-
-        try :
+        try:
+            self.table_name = "fanMonitoring_network"
+            self.input_name1, self.input_name2, self.input_name3, self.input_name4 = ["rxPps", "txPps", "time", "serverId_id"]
+            self.input_data1, self.input_data2, self.input_data3, self.input_data4 = networkInfoList
             conn = psycopg2.connect(host='localhost', dbname='postgres', user='postgres', password='cua001', port=5432)
             c = conn.cursor()
-            c.execute(f"INSERT OR IGNORE INTO {self.table_name} ({self.input_name1}, {self.input_name2}, {self.input_name3}, {self.input_name4}) VALUES \
-                      (?,?,?,?)", (self.input_data1, self.input_data2, self.input_data3, self.input_data4))
+            c.execute(f'INSERT INTO "{self.table_name}" ("{self.input_name1}", "{self.input_name2}", "{self.input_name3}", "{self.input_name4}") VALUES \
+                      ({self.input_data1}, {self.input_data2}, current_timestamp, {self.input_data4})')
             conn.commit()
             conn.close()
-        except :
-            pass
+        except : pass
+
 
     def save_ilo_to_db(self, iloInfoList):
-        self.table_name = "fanMonitoring_ilo"
-        self.input_name1 = "fan1"
-        self.input_name2 = "fan1Status"
-        self.input_name3 = "fan2"
-        self.input_name4 = "fan2Status"
-        self.input_name5 = "fan3"
-        self.input_name6 = "fan3Status"
-        self.input_name7 = "fan4"
-        self.input_name8 = "fan4Status"
-        self.input_name9 = "cpuThermal"
-        self.input_name10 = "cpuThermalStatus"
-        self.input_name11 = "memThermal"
-        self.input_name12 = "memThermalStatus"
-        self.input_name13 = "serverId_id"
-        self.input_name14 = "time"
-        self.input_data1, self.input_data2, self.input_data3, self.input_data4, self.input_data5, self.input_data6, \
-        self.input_data7,self.input_data8, self.input_data9, self.input_data10, self.input_data11, self.input_data12, \
-        self.input_data13, self.input_data14 = iloInfoList
+        try:
+            self.table_name = "fanMonitoring_ilo"
+            self.input_name1 = "fan1"
+            self.input_name2 = "fan1Status"
+            self.input_name3 = "fan2"
+            self.input_name4 = "fan2Status"
+            self.input_name5 = "fan3"
+            self.input_name6 = "fan3Status"
+            self.input_name7 = "fan4"
+            self.input_name8 = "fan4Status"
+            self.input_name9 = "cpuThermal"
+            self.input_name10 = "cpuThermalStatus"
+            self.input_name11 = "memThermal"
+            self.input_name12 = "memThermalStatus"
+            self.input_name13 = "serverId_id"
+            self.input_name14 = "time"
+            self.input_data1, self.input_data2, self.input_data3, self.input_data4, self.input_data5, self.input_data6, \
+            self.input_data7,self.input_data8, self.input_data9, self.input_data10, self.input_data11, self.input_data12, \
+            self.input_data13, self.input_data14 = iloInfoList
 
-
-        try :
             conn = psycopg2.connect(host='localhost', dbname='postgres', user='postgres', password='cua001', port=5432)
             c = conn.cursor()
-            c.execute(f"INSERT OR IGNORE INTO {self.table_name} ({self.input_name1}, {self.input_name2}, {self.input_name3}, {self.input_name4}, \
-            {self.input_name5}, {self.input_name6}, {self.input_name7}, {self.input_name8}, {self.input_name9}, {self.input_name10}, \
-            {self.input_name11}, {self.input_name12}, {self.input_name13}, {self.input_name14}) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)",\
-            (self.input_data1, self.input_data2, self.input_data3, self.input_data4, self.input_data5, self.input_data6, self.input_data7, \
-             self.input_data8,self.input_data9, self.input_data10, self.input_data11, self.input_data12, self.input_data13, self.input_data14))
+            c.execute(f'INSERT INTO "{self.table_name}" ("{self.input_name1}", "{self.input_name2}", "{self.input_name3}", "{self.input_name4}", \
+            "{self.input_name5}", "{self.input_name6}", "{self.input_name7}", "{self.input_name8}", "{self.input_name9}", "{self.input_name10}", \
+            "{self.input_name11}", "{self.input_name12}", "{self.input_name13}", "{self.input_name14}") VALUES ({self.input_data1}, {self.input_data2}, {self.input_data3}, {self.input_data4}, {self.input_data5}, {self.input_data6}, {self.input_data7}, \
+             {self.input_data8},{self.input_data9}, {self.input_data10}, {self.input_data11}, {self.input_data12}, {self.input_data13}, current_timestamp)'\
+            )
             conn.commit()
             conn.close()
-        except :
-            pass
+        except: pass
+
 
     def save_connection_to_db(self, connectionInfoList):
-        self.table_name = "fanMonitoring_connection"
-        self.input_name1 = "connectToLinux"
-        self.input_name2 = "connectToIlo"
-        self.input_name3 = "serverId_id"
-        self.input_data1 = connectionInfoList[0]
-        self.input_data2 = connectionInfoList[1]
-        self.input_data3 = connectionInfoList[2]
+        try:
+            self.table_name = "fanMonitoring_connection"
+            self.input_name1 = "connectToLinux"
+            self.input_name2 = "connectToIlo"
+            self.input_name3 = "serverId_id"
+            self.input_data1 = connectionInfoList[0]
+            self.input_data2 = connectionInfoList[1]
+            self.input_data3 = connectionInfoList[2]
 
-
-        try :
             conn = psycopg2.connect(host='localhost', dbname='postgres', user='postgres', password='cua001', port=5432)
             c = conn.cursor()
-            c.execute(f"INSERT OR IGNORE INTO {self.table_name} ({self.input_name1}, {self.input_name2}, {self.input_name3}) VALUES (?,?,?)",\
-                (self.input_data1, self.input_data2, self.input_data3))
+            c.execute(f'INSERT INTO "{self.table_name}" ("{self.input_name1}", "{self.input_name2}", "{self.input_name3}") VALUES ({self.input_data1}, {self.input_data2}, {self.input_data3})')
             conn.commit()
             conn.close()
-        except :
-            pass
+        except : pass
