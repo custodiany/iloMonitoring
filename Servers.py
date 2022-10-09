@@ -36,7 +36,7 @@ class Servers:
                 result[0] = True
             else :
                 result[0] = False
-            result[2] = self.server_name
+            result[2] = self.server_db_id
             return result
         except :
             pass

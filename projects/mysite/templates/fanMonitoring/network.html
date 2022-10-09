@@ -1,0 +1,51 @@
+{% extends 'base_2.html' %}
+{% block content %}
+
+<div class="container">
+    <br><br><br>
+    <div class="container" style="text-align:right;">
+    <form action="" mtehod="get" id="serverSelect">
+        <select name="serverType" form="serverSelect">
+            <option value="1">SDP</option>
+            <option value="2">FDP</option>
+            <option value="3">DRF</option>
+            <option value="4">SDR</option>
+            <option value="5">EFS</option>
+            <option value="6">RCOM</option>
+            <option value="7">BYP</option>
+            <option value="8">TSV</option>
+            <option value="9">APP</option>
+            <option value="10">NMS</option>
+            <option value="11">PMS</option>
+            <option value="12">WAS</option>
+            <option value="13">ETC</option>
+        </select>
+        <input class=btn-secondary type="submit">
+    </form>
+    </div>
+    <div class="row">
+    {% for server in servers %}
+        <div class="col-4">
+
+        </div>
+        <div class="col-4">
+    <div class="card">
+        <div class="card-header" style="text-align : center;">
+            {{ server.serverId__serverName }}
+        </div>
+        <div class="card-body" style="text-align : center;">
+            RX PPS(Packet per Second) : {{ server.rxPps }}<br>
+            TX PPS(Packet per Second) : {{ server.txPps }}<br>
+            Received Time : {{ server.time }}
+        </div>
+    </div>
+            </div>
+        <div class="col-4">
+
+        </div>
+    {% endfor %}
+        </div>
+
+</div>
+
+{% endblock %}

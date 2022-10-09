@@ -1,8 +1,37 @@
-{% extends 'base.html' %}
+{% extends 'base_2.html' %}
 {% block content %}
+<br><br><br><br><br><br>
 
-<div class="container-fluid">
-    <img src="static/introkac_bg.png" class="img-responsive img-rounded" />
+<div class="container">
+    <table class="table" style = "text-align:center">
+        <thead>
+            <tr>
+                <th scope="col">index</th>
+                <th scope="col">ServerName</th>
+                <th scope="col">Server Connection Check</th>
+                <th scope="col">ILO Connection Check</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for connection in connections %}
+            <tr>
+                <td>{{ connection.id }}</td>
+                <td>{{ connection }}</td>
+                {% if connection.connectToLinux == True %}
+                <td><img src="/static/green.png" width="20px" height="20px"></td>
+                {% else %}
+                <td><img src="/static/red.png" width="20px" height="20px"></td>
+                {% endif %}
+                {% if connection.connectToIlo == True %}
+                <td><img src="/static/green.png" width="20px" height="20px"></td>
+                {% else %}
+                <td><img src="/static/red.png" width="20px" height="20px"></td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
 </div>
 
 {% endblock %}

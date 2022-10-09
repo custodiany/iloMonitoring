@@ -1,0 +1,84 @@
+{% extends 'base_2.html' %}
+{% block content %}
+
+<div class="container">
+    <br><br><br>
+    <div class="container" style="text-align:right;">
+        <div style="text-align:center;">
+            Recieved Time : {{ rtime.time }}
+        </div>
+    <form action="" mtehod="get" id="serverSelect">
+        <select name="serverType" form="serverSelect">
+            <option value="1">SDP</option>
+            <option value="2">FDP</option>
+            <option value="3">DRF</option>
+            <option value="4">SDR</option>
+            <option value="5">EFS</option>
+            <option value="6">RCOM</option>
+            <option value="7">BYP</option>
+            <option value="8">TSV</option>
+            <option value="9">APP</option>
+            <option value="10">NMS</option>
+            <option value="11">PMS</option>
+            <option value="12">WAS</option>
+            <option value="13">ETC</option>
+        </select>
+        <input class=btn-secondary type="submit">
+    </form>
+    </div>
+    <div class="row">
+    {% for server in servers %}
+<div class="col-4"></div>
+        <div class="col-4">
+    <div class="card">
+        <div class="card-header" style="text-align : center;">
+            {{ server.serverId__serverName }}
+        </div>
+        <div class="card-body" style="text-align : center;">
+            FAN1 speed : {{ server.fan1 }}
+            {% if server.fan1Status == True %}
+            <img src="/static/green.png" width="20px" height="20px">
+            {% else %}
+            <img src="/static/red.png" width="20px" height="20px">
+            {% endif %}<br>
+            FAN2 speed : {{ server.fan2 }}
+            {% if server.fan2Status == True %}
+            <img src="/static/green.png" width="20px" height="20px">
+            {% else %}
+            <img src="/static/red.png" width="20px" height="20px">
+            {% endif %}<br>
+            FAN3 speed : {{ server.fan3 }}
+            {% if server.fan3Status == True %}
+            <img src="/static/green.png" width="20px" height="20px">
+            {% else %}
+            <img src="/static/red.png" width="20px" height="20px">
+            {% endif %}<br>
+            FAN4 speed : {{ server.fan4 }}
+            {% if server.fan4Status == True %}
+            <img src="/static/green.png" width="20px" height="20px">
+            {% else %}
+            <img src="/static/red.png" width="20px" height="20px">
+            {% endif %}<br>
+            CPU Thermal : {{ server.cpuThermal }}
+            {% if server.cpuThermalStatus == True %}
+            <img src="/static/green.png" width="20px" height="20px">
+            {% else %}
+            <img src="/static/red.png" width="20px" height="20px">
+            {% endif %}<br>
+            Memory Thermal : {{ server.memThermal }}
+            {% if server.memThermalStatus == True %}
+            <img src="/static/green.png" width="20px" height="20px">
+            {% else %}
+            <img src="/static/red.png" width="20px" height="20px">
+            {% endif %}<br>
+        </div>
+    </div>
+            </div>
+        <div class="col-4">
+
+        </div>
+    {% endfor %}
+</div>
+</div>
+
+{% endblock %}

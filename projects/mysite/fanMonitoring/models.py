@@ -42,7 +42,7 @@ class Network(models.Model):
     serverId = models.ForeignKey(Server, on_delete=models.CASCADE)
     rxPps = models.FloatField()
     txPps = models.FloatField()
-    time = models.DateField(null = True)
+    time = models.DateTimeField(null = True)
 
     def __str__(self):
         return self.serverId.serverName
@@ -62,7 +62,7 @@ class Ilo(models.Model):
     cpuThermalStatus = models.BooleanField(default=False)
     memThermal=models.FloatField(null = True)
     memThermalStatus = models.BooleanField(default = False)
-    time = models.DateField(null = True)
+    time = models.DateTimeField(null = True)
 
     def __str__(self):
         return self.serverId.serverName

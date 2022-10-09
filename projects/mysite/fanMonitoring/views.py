@@ -12,10 +12,10 @@ import datetime
 # Create your views here.
 
 
-
 def index(request):
     servers = Server.objects.all()
-    context = {'servers':servers}
+    connections = Connection.objects.all().order_by('-id')
+    context = {'servers':servers, 'connections' : connections}
     return render(request, 'fanMonitoring/index.html', context)
 
 def registrationServerType(request):
@@ -25,29 +25,27 @@ def registrationServer(request):
     pass
 
 def cmh(request):
-    serverType = request.GET.get('serverType', '')
-    sdps = Cmh.objects.filter(serverId__serverTypeId = 1).last() #최근값만 가져옴.
-    fdps = Cmh.objects.filter(serverId__serverTypeId = 2).last()
-    drfs = Cmh.objects.filter(serverId__serverTypeId = 3).values().last()
-    sdrs = Cmh.objects.filter(serverId__serverTypeId = 4).values().last()
-    efss = Cmh.objects.filter(serverId__serverTypeId = 5).values().last()
-    rcoms = Cmh.objects.filter(serverId__serverTypeId = 6).values().last()
-    byps = Cmh.objects.filter(serverId__serverTypeId = 7).values().last()
-    tsvs = Cmh.objects.filter(serverId__serverTypeId = 8).values().last()
-    apps = Cmh.objects.filter(serverId__serverTypeId = 9).values().last()
-    nmss = Cmh.objects.filter(serverId__serverTypeId = 10).values().last()
-    pmss = Cmh.objects.filter(serverId__serverTypeId = 11).values().last()
-    wass = Cmh.objects.filter(serverId__serverTypeId = 12).values().last()
-    etcs = Cmh.objects.filter(serverId__serverTypeId = 13).values().last()
-    context = {'sdps' : sdps, 'fdps' : fdps, 'drfs' : drfs, 'sdrs' : sdrs, 'efss' : efss, 'rcoms' : rcoms, 'byps' : byps,\
-               'tsvs' : tsvs, 'apps' : apps, 'nmss' : nmss, 'pmss' : pmss, 'wass' : wass, 'etcs' : etcs}
+    serverType = request.GET.get('serverType', '1')
+    rtime = Cmh.objects.filter(serverId__serverTypeId=serverType).values('time').latest('id')
+    servers = Cmh.objects.filter(serverId__serverTypeId = serverType).values('serverId__serverName', 'cpu', 'cpuStatus', 'mem', 'memStatus', 'hdd', 'hddStatus').distinct()
+    context = {'servers' : servers, 'serverType' : serverType, 'rtime' : rtime}
     return render(request, 'fanMonitoring/cmh.html', context)
 
 def network(request):
-    pass
+    serverType = request.GET.get('serverType', '1')
+    servers = Network.objects.filter(serverId__serverTypeId=serverType).values('serverId__serverName', 'rxPps', 'txPps', 'time'
+                                                                               ).order_by('-id')
+    context = {'servers': servers, 'serverType': serverType}
+    return render(request, 'fanMonitoring/network.html', context)
 
 def iloInfo(request):
-    pass
+    serverType = request.GET.get('serverType', '1')
+    rtime = Ilo.objects.filter(serverId__serverTypeId=serverType).values('time').latest('id')
+    servers = Ilo.objects.filter(serverId__serverTypeId=serverType).values('serverId__serverName', 'fan1', 'fan1Status','fan2', 'fan2Status', \
+                                                                           'fan3', 'fan3Status','fan4', 'fan4Status', 'cpuThermal', 'cpuThermalStatus',\
+                                                                            'memThermal', 'memThermalStatus').distinct()
+    context = {'servers': servers, 'serverType': serverType, 'rtime': rtime}
+    return render(request, 'fanMonitoring/ilo.html', context)
 
 def logHome(request):
     pass
