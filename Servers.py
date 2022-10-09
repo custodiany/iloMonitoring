@@ -3,6 +3,8 @@ import paramiko
 import time
 import sqlite3
 from datetime import datetime
+from ping3 import ping
+import psycopg2
 
 
 class Servers:
@@ -20,22 +22,21 @@ class Servers:
         self.sshport = serverInfo[8]
         self.servertype_id = serverInfo[9]
         self.server_db_id = serverInfo[10]
-        self.db_name = "./projects/mysite/db.sqlite3"
 
     def connection_test(self):
         try :
             result = [0,0,0]
             ################# Ubuntu에서 돌릴때는 -c옵션으로 변경하기!
-            r = os.system(f"ping -n 1 {self.ilo_ip}")
-            q = os.system(f"ping -n 1 {self.server_ip}")
-            if r==0:
-                result[1] = True
-            else :
+            r = ping(self.ilo_ip)
+            q = ping(self.server_ip)
+            if r==None:
                 result[1] = False
-            if q==0 :
-                result[0] = True
             else :
+                result[1] = True
+            if q==None :
                 result[0] = False
+            else :
+                result[0] = True
             result[2] = self.server_db_id
             return result
         except :
@@ -196,7 +197,7 @@ class Servers:
             = cmhInfoList
 
         try :
-            conn = sqlite3.connect(self.db_name)
+            conn = psycopg2.connect(host='localhost', dbname='postgres', user='postgres', password='cua001', port=5432)
             c = conn.cursor()
             c.execute(f"INSERT OR IGNORE INTO {self.table_name} ({self.input_name1}, {self.input_name2}, {self.input_name3}, {self.input_name4}, {self.input_name5},\
                                               {self.input_name6}, {self.input_name7}, {self.input_name8}) VALUES (?,?,?,?,?,?,?,?)", \
@@ -213,7 +214,7 @@ class Servers:
         self.input_data1, self.input_data2, self.input_data3, self.input_data4 = networkInfoList
 
         try :
-            conn = sqlite3.connect(self.db_name)
+            conn = psycopg2.connect(host='localhost', dbname='postgres', user='postgres', password='cua001', port=5432)
             c = conn.cursor()
             c.execute(f"INSERT OR IGNORE INTO {self.table_name} ({self.input_name1}, {self.input_name2}, {self.input_name3}, {self.input_name4}) VALUES \
                       (?,?,?,?)", (self.input_data1, self.input_data2, self.input_data3, self.input_data4))
@@ -244,7 +245,7 @@ class Servers:
 
 
         try :
-            conn = sqlite3.connect(self.db_name)
+            conn = psycopg2.connect(host='localhost', dbname='postgres', user='postgres', password='cua001', port=5432)
             c = conn.cursor()
             c.execute(f"INSERT OR IGNORE INTO {self.table_name} ({self.input_name1}, {self.input_name2}, {self.input_name3}, {self.input_name4}, \
             {self.input_name5}, {self.input_name6}, {self.input_name7}, {self.input_name8}, {self.input_name9}, {self.input_name10}, \
@@ -267,7 +268,7 @@ class Servers:
 
 
         try :
-            conn = sqlite3.connect(self.db_name)
+            conn = psycopg2.connect(host='localhost', dbname='postgres', user='postgres', password='cua001', port=5432)
             c = conn.cursor()
             c.execute(f"INSERT OR IGNORE INTO {self.table_name} ({self.input_name1}, {self.input_name2}, {self.input_name3}) VALUES (?,?,?)",\
                 (self.input_data1, self.input_data2, self.input_data3))

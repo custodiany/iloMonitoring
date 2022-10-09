@@ -1,12 +1,12 @@
 import sqlite3
+import psycopg2
 from datetime import datetime
 
 class Database:
-    def __init__(self, db_name = "./projects/mysite/db.sqlite3"):
-        self.db_name = db_name
-
     def readServerInfo(self):
-        conn = sqlite3.connect(self.db_name)
+        # conn = sqlite3.connect(self.db_name)
+        # c = conn.cursor()
+        conn = psycopg2.connect(host='localhost', dbname='postgres', user='postgres', password='cua001', port=5432)
         c = conn.cursor()
         # Server instance 생성시 필요한 정보 순서대로 sorting
         c.execute("SELECT \

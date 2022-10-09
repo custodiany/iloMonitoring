@@ -11,6 +11,7 @@ if __name__ == "__main__":
 
     index = 0
     database = Database()
+
     while True:
         print("start process")
         for serverInfo in database.readServerInfo():
@@ -18,14 +19,19 @@ if __name__ == "__main__":
             # 서버 인스턴스 생성
             server = Servers(serverInfo)
             # 서버 및 ilo에서 DATA 받아와 DB 저장
-            print(server.connection_test())
-            print(server.get_cmh_info())
-            print(server.get_ilo_info())
-            print(server.get_network_info())
-            server.save_connection_to_db(server.connection_test())
-            server.save_cmh_to_db(server.get_cmh_info())
-            server.save_ilo_to_db(server.get_ilo_info())
-            server.save_network_to_db(server.get_network_info())
+            connect_test_result = server.connection_test()
+            server.save_connection_to_db(connect_test_result)
+            print(connect_test_result)
+            if connect_test_result[0]: #server 연결시
+                print(server.get_cmh_info())
+                server.save_cmh_to_db(server.get_cmh_info())
+                print(server.get_network_info())
+                server.save_network_to_db(server.get_network_info())
+            if connect_test_result[1]: #ilo 연결시
+                print(server.get_ilo_info())
+                server.save_ilo_to_db(server.get_ilo_info())
+            else : print("Fail to Connect")
         index += 1
         # 대기 - 60초
         time.sleep(60)
+
