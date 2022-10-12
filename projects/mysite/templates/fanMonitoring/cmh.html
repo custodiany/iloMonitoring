@@ -29,13 +29,43 @@
 
     <div class="row">
                     {% for server in servers %}
-        <div class="col-4">
+        {% if forloop.counter0|divisibleby:3 %}
+        <div class="col-3">
         </div>
 
-        <div class="col-4">
+        <div class="col-3">
             <div class="card">
                 <div class="card-header" style="text-align : center;">
-                    {{ server.serverId__serverName }}
+                    {{ server.serverId }}
+                </div>
+                <div class="card-body" style="text-align : center;">
+                    CPU : {{ server.cpu }}
+                    {% if server.cpuStatus == True %}
+                    <img src="/static/green.png" width="20px" height="20px">
+                    {% else %}
+                    <img src="/static/red.png" width="20px" height="20px">
+                    {% endif %}<br>
+                    Memory : {{ server.mem }}
+                    {% if server.memStatus == True %}
+                    <img src="/static/green.png" width="20px" height="20px">
+                    {% else %}
+                    <img src="/static/red.png" width="20px" height="20px">
+                    {% endif %}<br>
+                    FileSystem : {{ server.hdd }}
+                    {% if server.hddStatus == True %}
+                    <img src="/static/green.png" width="20px" height="20px">
+                    {% else %}
+                    <img src="/static/red.png" width="20px" height="20px">
+                    {% endif %}<br>
+                </div>
+            </div>
+        </div>
+{% else %}
+
+        <div class="col-3">
+            <div class="card">
+                <div class="card-header" style="text-align : center;">
+                    {{ server.serverId }}
                 </div>
                 <div class="card-body" style="text-align : center;">
                     CPU : {{ server.cpu }}
@@ -60,8 +90,7 @@
             </div>
         </div>
 
-        <div class="col-4">
-        </div>
+        {% endif %}
                     {% endfor %}
     </div>
 

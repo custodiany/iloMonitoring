@@ -15,3 +15,10 @@ class Database:
               "fanMonitoring_server"."serverTypeId_id" = "fanMonitoring_servertype".id')
         result = c.fetchall()
         return result
+
+    def getServerTypeCnt(self):
+        conn = psycopg2.connect(host='localhost', dbname='postgres', user='postgres', password='cua001', port=5432)
+        c = conn.cursor()
+        c.execute('SELECT COUNT(*) FROM "fanMonitoring_servertype"')
+        result = c.fetchone()
+        return result[0]

@@ -25,13 +25,14 @@
     </div>
     <div class="row">
     {% for server in servers %}
+        {% if forloop.counter0|divisibleby:2 or forloop.first %}
         <div class="col-4">
 
         </div>
         <div class="col-4">
     <div class="card">
         <div class="card-header" style="text-align : center;">
-            {{ server.serverId__serverName }}
+            {{ server.serverId }}
         </div>
         <div class="card-body" style="text-align : center;">
             RX PPS(Packet per Second) : {{ server.rxPps }}<br>
@@ -40,9 +41,21 @@
         </div>
     </div>
             </div>
-        <div class="col-4">
-
+        {% else %}
+         <div class="col-4">
+    <div class="card">
+        <div class="card-header" style="text-align : center;">
+            {{ server.serverId }}
         </div>
+        <div class="card-body" style="text-align : center;">
+            RX PPS(Packet per Second) : {{ server.rxPps }}<br>
+            TX PPS(Packet per Second) : {{ server.txPps }}<br>
+            Received Time : {{ server.time }}
+        </div>
+    </div>
+            </div>
+        {% endif %}
+
     {% endfor %}
         </div>
 

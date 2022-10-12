@@ -28,44 +28,93 @@
     </div>
     <div class="row">
     {% for server in servers %}
-<div class="col-4"></div>
-        <div class="col-4">
+        {% if forloop.counter0|divisibleby:3 or forloop.first %}
+<div class="col-3"></div>
+
+
+        <div class="col-3">
     <div class="card">
         <div class="card-header" style="text-align : center;">
-            {{ server.serverId__serverName }}
+            {{ server.serverId }}
         </div>
         <div class="card-body" style="text-align : center;">
-            FAN1 speed : {{ server.fan1 }}
+            FAN1 speed : {{ server.fan1 }}%
             {% if server.fan1Status == True %}
             <img src="/static/green.png" width="20px" height="20px">
             {% else %}
             <img src="/static/red.png" width="20px" height="20px">
             {% endif %}<br>
-            FAN2 speed : {{ server.fan2 }}
+            FAN2 speed : {{ server.fan2 }}%
             {% if server.fan2Status == True %}
             <img src="/static/green.png" width="20px" height="20px">
             {% else %}
             <img src="/static/red.png" width="20px" height="20px">
             {% endif %}<br>
-            FAN3 speed : {{ server.fan3 }}
+            FAN3 speed : {{ server.fan3 }}%
             {% if server.fan3Status == True %}
             <img src="/static/green.png" width="20px" height="20px">
             {% else %}
             <img src="/static/red.png" width="20px" height="20px">
             {% endif %}<br>
-            FAN4 speed : {{ server.fan4 }}
+            FAN4 speed : {{ server.fan4 }}%
             {% if server.fan4Status == True %}
             <img src="/static/green.png" width="20px" height="20px">
             {% else %}
             <img src="/static/red.png" width="20px" height="20px">
             {% endif %}<br>
-            CPU Thermal : {{ server.cpuThermal }}
+            CPU Thermal : {{ server.cpuThermal }}℃
             {% if server.cpuThermalStatus == True %}
             <img src="/static/green.png" width="20px" height="20px">
             {% else %}
             <img src="/static/red.png" width="20px" height="20px">
             {% endif %}<br>
-            Memory Thermal : {{ server.memThermal }}
+            Memory Thermal : {{ server.memThermal }}℃
+            {% if server.memThermalStatus == True %}
+            <img src="/static/green.png" width="20px" height="20px">
+            {% else %}
+            <img src="/static/red.png" width="20px" height="20px">
+            {% endif %}<br>
+        </div>
+    </div>
+</div>
+            {% else %}
+        <div class="col-3">
+    <div class="card">
+        <div class="card-header" style="text-align : center;">
+            {{ server.serverId }}
+        </div>
+        <div class="card-body" style="text-align : center;">
+            FAN1 speed : {{ server.fan1 }}%
+            {% if server.fan1Status == True %}
+            <img src="/static/green.png" width="20px" height="20px">
+            {% else %}
+            <img src="/static/red.png" width="20px" height="20px">
+            {% endif %}<br>
+            FAN2 speed : {{ server.fan2 }}%
+            {% if server.fan2Status == True %}
+            <img src="/static/green.png" width="20px" height="20px">
+            {% else %}
+            <img src="/static/red.png" width="20px" height="20px">
+            {% endif %}<br>
+            FAN3 speed : {{ server.fan3 }}%
+            {% if server.fan3Status == True %}
+            <img src="/static/green.png" width="20px" height="20px">
+            {% else %}
+            <img src="/static/red.png" width="20px" height="20px">
+            {% endif %}<br>
+            FAN4 speed : {{ server.fan4 }}%
+            {% if server.fan4Status == True %}
+            <img src="/static/green.png" width="20px" height="20px">
+            {% else %}
+            <img src="/static/red.png" width="20px" height="20px">
+            {% endif %}<br>
+            CPU Thermal : {{ server.cpuThermal }}℃
+            {% if server.cpuThermalStatus == True %}
+            <img src="/static/green.png" width="20px" height="20px">
+            {% else %}
+            <img src="/static/red.png" width="20px" height="20px">
+            {% endif %}<br>
+            Memory Thermal : {{ server.memThermal }}℃
             {% if server.memThermalStatus == True %}
             <img src="/static/green.png" width="20px" height="20px">
             {% else %}
@@ -74,9 +123,8 @@
         </div>
     </div>
             </div>
-        <div class="col-4">
+            {% endif %}
 
-        </div>
     {% endfor %}
 </div>
 </div>

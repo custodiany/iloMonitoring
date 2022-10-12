@@ -3,34 +3,59 @@
 <br><br><br><br><br><br>
 
 <div class="container">
-    <table class="table" style = "text-align:center">
-        <thead>
-            <tr>
-                <th scope="col">index</th>
-                <th scope="col">ServerName</th>
-                <th scope="col">Server Connection Check</th>
-                <th scope="col">ILO Connection Check</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for connection in connections %}
-            <tr>
-                <td>{{ connection.id }}</td>
-                <td>{{ connection }}</td>
+    <div class="row">
+    {% for connection in connections %}
+        {% if forloop.counter0|divisibleby:5 or forloop.first %}
+        <div class="col-2">
+        </div>
+        <div class="col-2">
+            <div class="card-header" style="text-align : center;">
+                {{ connection }}
+            </div>
+            <div class="card-body" style="text-align : center;">
+                Server Connect :
                 {% if connection.connectToLinux == True %}
                 <td><img src="/static/green.png" width="20px" height="20px"></td>
                 {% else %}
                 <td><img src="/static/red.png" width="20px" height="20px"></td>
                 {% endif %}
+                <br>
+                ILO Connect :
                 {% if connection.connectToIlo == True %}
                 <td><img src="/static/green.png" width="20px" height="20px"></td>
                 {% else %}
                 <td><img src="/static/red.png" width="20px" height="20px"></td>
                 {% endif %}
-            </tr>
+            </div>
+        </div>
+
+        {% else %}
+         <div class="col-2">
+            <div class="card-header" style="text-align : center;">
+                {{ connection }}
+            </div>
+            <div class="card-body" style="text-align : center;">
+                Server Connect :
+                {% if connection.connectToLinux == True %}
+                <td><img src="/static/green.png" width="20px" height="20px"></td>
+                {% else %}
+                <td><img src="/static/red.png" width="20px" height="20px"></td>
+                {% endif %}
+                <br>
+                ILO Connect :
+                {% if connection.connectToIlo == True %}
+                <td><img src="/static/green.png" width="20px" height="20px"></td>
+                {% else %}
+                <td><img src="/static/red.png" width="20px" height="20px"></td>
+                {% endif %}
+            </div>
+        </div>
+
+        {% endif %}
+
+
         {% endfor %}
-        </tbody>
-    </table>
+    </div>
 
 </div>
 

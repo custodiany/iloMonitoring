@@ -1,7 +1,6 @@
 import os
 import paramiko
 import time
-import sqlite3
 from datetime import datetime
 from ping3 import ping
 import psycopg2

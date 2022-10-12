@@ -26,11 +26,11 @@ class Server(models.Model):
 class Cmh(models.Model):
     id = models.AutoField(primary_key=True)
     serverId = models.ForeignKey(Server, on_delete=models.CASCADE)
-    cpu = models.IntegerField()
+    cpu = models.FloatField()
     cpuStatus = models.BooleanField(default=False)
-    mem = models.IntegerField()
+    mem = models.FloatField()
     memStatus = models.BooleanField(default=False)
-    hdd = models.IntegerField()
+    hdd = models.FloatField()
     hddStatus = models.BooleanField(default=False)
     time = models.DateTimeField(null=True)
 
